@@ -109,7 +109,7 @@ function generateSalesList(store) {
   allSalesContainer.appendChild(listSalesContainer);
   listSalesContainer.appendChild(listHeader);
   listSalesContainer.appendChild(listItems);
-  
+
   for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
     let salesItem = document.createElement('li');
     if (i <= 12) {
