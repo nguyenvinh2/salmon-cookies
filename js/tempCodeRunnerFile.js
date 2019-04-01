@@ -1,1 +1,0 @@
- // totalCookiesSold: this.cookieSoldByHour.reduce((sumValue, currentValue) => sumValue + currentValue),

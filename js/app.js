@@ -15,7 +15,7 @@ let cookiesAmountCalculator = (customers, averageCookiesSold) => {
 };
 
 let totalCookieSoldCalculator = (cookieSpreadsheet) => {
-  return(cookieSpreadsheet.reduce((sumValue, currentValue) => sumValue + currentValue));
+  return (cookieSpreadsheet.reduce((sumValue, currentValue) => sumValue + currentValue));
 };
 
 var firstAndPike = {
@@ -24,7 +24,7 @@ var firstAndPike = {
   maxCustomers: 65,
   averageCookiesSold: 6.3,
   cookiesSold: [],
-  cookieSoldCalculator: function() {
+  cookieSoldCalculator: function () {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
@@ -38,7 +38,7 @@ var seaTac = {
   maxCustomers: 24,
   averageCookiesSold: 1.2,
   cookiesSold: [],
-  cookieSoldCalculator: function() {
+  cookieSoldCalculator: function () {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
@@ -52,7 +52,7 @@ var seattleCenter = {
   maxCustomers: 38,
   averageCookiesSold: 3.7,
   cookiesSold: [],
-  cookieSoldCalculator: function() {
+  cookieSoldCalculator: function () {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
@@ -66,7 +66,7 @@ var capitolHill = {
   maxCustomers: 38,
   averageCookiesSold: 2.3,
   cookiesSold: [],
-  cookieSoldCalculator: function() {
+  cookieSoldCalculator: function () {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
@@ -80,7 +80,7 @@ var alki = {
   maxCustomers: 16,
   averageCookiesSold: 4.6,
   cookiesSold: [],
-  cookieSoldCalculator: function() {
+  cookieSoldCalculator: function () {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
@@ -99,4 +99,31 @@ console.log(seaTac);
 console.log(seattleCenter);
 console.log(capitolHill);
 console.log(alki);
+
+function generateSalesList(store) {
+  let allSalesContainer = document.getElementById('sales');
+  let listSalesContainer = document.createElement('ul');
+  let listHeader = document.createElement('h3');
+  listHeader.textContent = `${store.name}`;
+  allSalesContainer.appendChild(listHeader);
+  allSalesContainer.appendChild(listSalesContainer);
+  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
+    let salesItem = document.createElement('li');
+    if (i <= 12) {
+      salesItem.textContent = `${i}AM: ${store.cookiesSold[i - storeMetaData.hoursOpen]}`;
+    } else {
+      salesItem.textContent = `${i-12}PM: ${store.cookiesSold[i - storeMetaData.hoursOpen]}`;
+    }
+    listSalesContainer.appendChild(salesItem);
+  }
+  let totalSales = document.createElement('li');
+  totalSales.textContent = `Total: ${store.cookiesSold[store.cookiesSold.length -1]}`;
+  listSalesContainer.appendChild(totalSales);
+}
+
+generateSalesList(firstAndPike);
+generateSalesList(seaTac);
+generateSalesList(seattleCenter);
+generateSalesList(capitolHill);
+generateSalesList(alki);
 
