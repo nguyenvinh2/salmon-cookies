@@ -102,11 +102,14 @@ console.log(alki);
 
 function generateSalesList(store) {
   let allSalesContainer = document.getElementById('sales');
-  let listSalesContainer = document.createElement('ul');
+  let listSalesContainer = document.createElement('div');
   let listHeader = document.createElement('h3');
+  let listItems = document.createElement('ul');
   listHeader.textContent = `${store.name}`;
-  allSalesContainer.appendChild(listHeader);
   allSalesContainer.appendChild(listSalesContainer);
+  listSalesContainer.appendChild(listHeader);
+  listSalesContainer.appendChild(listItems);
+  
   for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
     let salesItem = document.createElement('li');
     if (i <= 12) {
@@ -114,11 +117,11 @@ function generateSalesList(store) {
     } else {
       salesItem.textContent = `${i-12}PM: ${store.cookiesSold[i - storeMetaData.hoursOpen]}`;
     }
-    listSalesContainer.appendChild(salesItem);
+    listItems.appendChild(salesItem);
   }
   let totalSales = document.createElement('li');
   totalSales.textContent = `Total: ${store.cookiesSold[store.cookiesSold.length -1]}`;
-  listSalesContainer.appendChild(totalSales);
+  listItems.appendChild(totalSales);
 }
 
 generateSalesList(firstAndPike);
