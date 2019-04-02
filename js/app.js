@@ -64,27 +64,27 @@ function generateSalesList(storeList) {
     if (i === -1) {
       createTableHeader(salesRow);
     } else {
-      salesRender(salesRow, storeList[i]);
+      storeList[i].render(salesRow);
     }
     salesTable.appendChild(salesRow);
   }
 }
 
-function salesRender(salesRow, store) {
-  if (store.cookiesSold.length < 1) {
+StoreConstructor.prototype.render = function(salesRow) {
+  if (this.cookiesSold.length < 1) {
     console.log('The sales total cannot be rendered because there is nothing in the sales array');
   } else {
     for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed + 1; i++) {
       let salesItem = document.createElement('td');
       if (i === storeMetaData.hoursOpen - 1) {
-        salesItem.textContent = store.name;
+        salesItem.textContent = this.name;
       } else {
-        salesItem.textContent = store.cookiesSold[i - storeMetaData.hoursOpen];
+        salesItem.textContent = this.cookiesSold[i - storeMetaData.hoursOpen];
       }
       salesRow.appendChild(salesItem);
     }
   }
-}
+};
 
 function createTableHeader(salesRow) {
   for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 2; i++) {
