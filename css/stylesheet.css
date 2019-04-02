@@ -64,17 +64,7 @@ a {
   display: inline-block;
 }
 
-.fa-bars {
-  padding: 5px;
-}
-
-.fa-bars:hover {
-  border: thin solid azure;
-  border-radius: 3px;
-}
-
 .container {
-  border: thin solid lightseagreen;
   border-radius: 3px;
   padding: 5px;
   float: right;

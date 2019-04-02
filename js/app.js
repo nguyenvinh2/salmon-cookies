@@ -2,12 +2,15 @@
 
 const storeMetaData = {
   hoursOpen: 6,
-  hoursClosed: 20,
-  storeNames: ['1st and Pike', 'SeaTac Airport', 'Seattle Center', 'Capitol Hill', 'Alki']
+  hoursClosed: 19,
+  storeNames: ['1st and Pike', 'SeaTac Airport', 'Seattle Center', 'Capitol Hill', 'Alki'],
+  minCustomers: [23, 3, 11, 20, 2],
+  maxCustomers: [65, 24, 38, 38, 16],
+  averageCookiesSold: [6.3, 1.2, 3.7, 2.3, 4.6]
 };
 
 let customerCalculator = (min, max) => {
-  return (Math.ceil((Math.random() * (max-min) + min)));
+  return (Math.ceil((Math.random() * (max - min) + min)));
 };
 
 let cookiesAmountCalculator = (customers, averageCookiesSold) => {
@@ -18,115 +21,91 @@ let totalCookieSoldCalculator = (cookieSpreadsheet) => {
   return (cookieSpreadsheet.reduce((sumValue, currentValue) => sumValue + currentValue));
 };
 
-var firstAndPike = {
-  name: storeMetaData.storeNames[0],
-  minCustomers: 23,
-  maxCustomers: 65,
-  averageCookiesSold: 6.3,
-  cookiesSold: [],
-  cookieSoldCalculator: function () {
+function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
+  this.name = storeName;
+  this.minCustomers = customersMin;
+  this.maxCustomers = customersMax;
+  this.averageCookiesSold = cookiesSold;
+  this.cookiesSold = [];
+  this.cookieSoldCalculator = () => {
     for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
     this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
-  },
-};
-
-var seaTac = {
-  name: storeMetaData.storeNames[1],
-  minCustomers: 3,
-  maxCustomers: 24,
-  averageCookiesSold: 1.2,
-  cookiesSold: [],
-  cookieSoldCalculator: function () {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
-      this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
-    }
-    this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
-  },
-};
-
-var seattleCenter = {
-  name: storeMetaData.storeNames[2],
-  minCustomers: 11,
-  maxCustomers: 38,
-  averageCookiesSold: 3.7,
-  cookiesSold: [],
-  cookieSoldCalculator: function () {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
-      this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
-    }
-    this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
-  },
-};
-
-var capitolHill = {
-  name: storeMetaData.storeNames[3],
-  minCustomers: 20,
-  maxCustomers: 38,
-  averageCookiesSold: 2.3,
-  cookiesSold: [],
-  cookieSoldCalculator: function () {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
-      this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
-    }
-    this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
-  },
-};
-
-var alki = {
-  name: storeMetaData.storeNames[4],
-  minCustomers: 2,
-  maxCustomers: 16,
-  averageCookiesSold: 4.6,
-  cookiesSold: [],
-  cookieSoldCalculator: function () {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
-      this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
-    }
-    this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
-  },
-};
-
-firstAndPike.cookieSoldCalculator();
-seaTac.cookieSoldCalculator();
-seattleCenter.cookieSoldCalculator();
-capitolHill.cookieSoldCalculator();
-alki.cookieSoldCalculator();
-
-console.log(firstAndPike);
-console.log(seaTac);
-console.log(seattleCenter);
-console.log(capitolHill);
-console.log(alki);
-
-function generateSalesList(store) {
-  let allSalesContainer = document.getElementById('sales');
-  let listSalesContainer = document.createElement('div');
-  let listHeader = document.createElement('h3');
-  let listItems = document.createElement('ul');
-  listHeader.textContent = `${store.name}`;
-  allSalesContainer.appendChild(listSalesContainer);
-  listSalesContainer.appendChild(listHeader);
-  listSalesContainer.appendChild(listItems);
-
-  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
-    let salesItem = document.createElement('li');
-    if (i <= 12) {
-      salesItem.textContent = `${i}AM: ${store.cookiesSold[i - storeMetaData.hoursOpen]}`;
-    } else {
-      salesItem.textContent = `${i-12}PM: ${store.cookiesSold[i - storeMetaData.hoursOpen]}`;
-    }
-    listItems.appendChild(salesItem);
-  }
-  let totalSales = document.createElement('li');
-  totalSales.textContent = `Total: ${store.cookiesSold[store.cookiesSold.length -1]}`;
-  listItems.appendChild(totalSales);
+  };
 }
 
-generateSalesList(firstAndPike);
-generateSalesList(seaTac);
-generateSalesList(seattleCenter);
-generateSalesList(capitolHill);
-generateSalesList(alki);
+function generateStores(storeList) {
+  let totalStore = new StoreConstructor('Total',0,0,0);
+  totalStore.cookieSoldCalculator();
+  let listOfStores = [];
+  for (let i = 0; i < storeList.storeNames.length; i++) {
+    let storeInital = new StoreConstructor(storeList.storeNames[i], storeList.minCustomers[i], storeList.maxCustomers[i], storeList.averageCookiesSold[i]);
+    storeInital.cookieSoldCalculator();
+    listOfStores.push(storeInital);
+    totalStore.cookiesSold = totalStore.cookiesSold.map((element, index) => element + storeInital.cookiesSold[index]);
+  }
+  listOfStores.push(totalStore);
+  return listOfStores;
+}
 
+let listOfStores = generateStores(storeMetaData);
+console.log(listOfStores);
+
+function generateSalesList(storeList) {
+  let allSalesContainer = document.getElementById('sales');
+  let salesContainer = document.createElement('div');
+  let salesTable = document.createElement('table');
+  allSalesContainer.appendChild(salesContainer);
+  salesContainer.appendChild(salesTable);
+
+  for (let i = -1; i < storeList.length; i++) {
+    let salesRow = document.createElement('tr');
+    if (i === -1) {
+      createTableHeader(salesRow);
+    } else {
+      salesRender(salesRow, storeList[i]);
+    }
+    salesTable.appendChild(salesRow);
+  }
+}
+
+function salesRender(salesRow, store) {
+  if (store.cookiesSold.length < 1) {
+    console.log('The sales total cannot be rendered because there is nothing in the sales array');
+  } else {
+    for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed + 1; i++) {
+      let salesItem = document.createElement('td');
+      if (i === storeMetaData.hoursOpen - 1) {
+        salesItem.textContent = store.name;
+      } else {
+        salesItem.textContent = store.cookiesSold[i - storeMetaData.hoursOpen];
+      }
+      salesRow.appendChild(salesItem);
+    }
+  }
+}
+
+function createTableHeader(salesRow) {
+  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 2; i++) {
+    let salesHeader = document.createElement('th');
+    if (i === storeMetaData.hoursOpen) {
+      salesHeader.textContent = 'Store Name';
+    } else {
+      if (i < 13) {
+        salesHeader.textContent = `${i - 1}AM`;
+      } else if (i === 13) {
+        salesHeader.textContent = '12PM';
+      }
+      else if (i === storeMetaData.hoursClosed + 2) {
+        salesHeader.textContent = 'Daily Total';
+      }
+      else {
+        salesHeader.textContent = `${i - 13}PM`;
+      }
+    }
+    salesRow.appendChild(salesHeader);
+  }
+}
+
+generateSalesList(listOfStores);
