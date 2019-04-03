@@ -57,8 +57,6 @@ function createTotalSales(listOfStores) {
   return listOfStores;
 }
 
-let listOfStores = generateStores(storeMetaData);
-
 function generateSalesList(storeList) {
   let allSalesContainer = document.getElementById('sales');
   let salesContainer = document.createElement('div');
@@ -120,32 +118,42 @@ function addNewStore() {
   let minCustomers = document.getElementsByName('min-customer')[0].value;
   let maxCustomers = document.getElementsByName('max-customer')[0].value;
   let averageCookiesSold = document.getElementsByName('ave-cookies')[0].value;
+  let newStore = new StoreConstructor(storeName, parseInt(minCustomers), parseInt(maxCustomers), parseFloat(averageCookiesSold));
 
-  let newStore = new StoreConstructor(storeName, minCustomers, maxCustomers, averageCookiesSold);
-  newStore.cookieSoldCalculator();
-  let indexCheck = checkStore(storeName);
-
-  if (indexCheck !== false) {
-    listOfStores[indexCheck] = newStore;
-    listOfStores.pop();
+  if (minCustomers > maxCustomers) {
+    alert('The Minimum Anticipated Customers cannot be greater than the Maximum Anticipated Customers.');
   } else {
-    listOfStores[listOfStores.length - 1] = newStore;
+    let indexCheck = checkStore(storeName);
+
+    newStore.cookieSoldCalculator();
+
+    if (indexCheck !== false) {
+      newStore.name = listOfStores[indexCheck].name;
+      listOfStores[indexCheck] = newStore;
+      listOfStores.pop();
+    } else {
+      listOfStores[listOfStores.length - 1] = newStore;
+    }
+
+    listOfStores = createTotalSales(listOfStores);
+    document.getElementById('sales').innerHTML = '';
+    generateSalesList(listOfStores);
   }
-  listOfStores = createTotalSales(listOfStores);
-  document.getElementById('sales').innerHTML = '';
-  generateSalesList(listOfStores);
 }
 
 function checkStore(storeName) {
   for (let i = 0; i < listOfStores.length; i++) {
-    if (storeName === listOfStores[i].name) {
+    if (storeName.toLowerCase() === listOfStores[i].name.toLowerCase()) {
       return i;
     }
   }
   return false;
 }
 
+let listOfStores = generateStores(storeMetaData);
+
 generateSalesList(listOfStores);
+
 document.getElementsByName('send-data')[0].addEventListener('click', (event) => {
   event.preventDefault();
   addNewStore();
