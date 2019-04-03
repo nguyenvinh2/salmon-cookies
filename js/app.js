@@ -2,7 +2,7 @@
 
 const storeMetaData = {
   hoursOpen: 6,
-  hoursClosed: 19,
+  hoursClosed: 20,
   storeNames: ['1st and Pike', 'SeaTac Airport', 'Seattle Center', 'Capitol Hill', 'Alki'],
   minCustomers: [23, 3, 11, 20, 2],
   maxCustomers: [65, 24, 38, 38, 16],
@@ -28,7 +28,7 @@ function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
   this.averageCookiesSold = cookiesSold;
   this.cookiesSold = [];
   this.cookieSoldCalculator = () => {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
+    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed-1; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
     this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
@@ -74,7 +74,7 @@ StoreConstructor.prototype.render = function(salesRow) {
   if (this.cookiesSold.length < 1) {
     console.log('The sales total cannot be rendered because there is nothing in the sales array');
   } else {
-    for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed + 1; i++) {
+    for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed; i++) {
       let salesItem = document.createElement('td');
       if (i === storeMetaData.hoursOpen - 1) {
         salesItem.textContent = this.name;
@@ -87,7 +87,7 @@ StoreConstructor.prototype.render = function(salesRow) {
 };
 
 function createTableHeader(salesRow) {
-  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 2; i++) {
+  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 1; i++) {
     let salesHeader = document.createElement('th');
     if (i === storeMetaData.hoursOpen) {
       salesHeader.textContent = 'Store Name';
@@ -97,7 +97,7 @@ function createTableHeader(salesRow) {
       } else if (i === 13) {
         salesHeader.textContent = '12PM';
       }
-      else if (i === storeMetaData.hoursClosed + 2) {
+      else if (i === storeMetaData.hoursClosed + 1) {
         salesHeader.textContent = 'Daily Total';
       }
       else {
