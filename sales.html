@@ -29,15 +29,17 @@
   <main>
     <div id="form-input">
       <form id="add-stores">
-        <label><b>Store Name</b></label>
-        <input type="text" placeholder="Enter Name of Store" name="store-name" required/>
-        <label><b>Minimum Anticipated Customer</b></label>
-        <input type="number" min="0" step="1" name="min-customer" required/>
-        <label><b>Maximum Anticipated Customer</b></label>
-        <input type="number" min="0" step="1" name="max-customer" required/>
-        <label><b>Average Cookies Sold per Hour</b></label>
-        <input type="number" name="ave-cookies" min="0" step=".1" required/>
-        <button type="submit" name="send-data">Submit Data</button>
+        <fieldset>
+          <label><b>Store Name</b></label>
+          <input type="text" placeholder="Enter Name of Store" name="store-name" required />
+          <label><b>Minimum Anticipated Customer</b></label>
+          <input type="number" min="0" step="1" name="min-customer" required />
+          <label><b>Maximum Anticipated Customer</b></label>
+          <input type="number" min="0" step="1" name="max-customer" required />
+          <label><b>Average Cookies Sold per Hour</b></label>
+          <input type="number" name="ave-cookies" min="0" step=".1" required />
+          <button name="send-data">Submit Data</button>
+        </fieldset>
       </form>
     </div>
     <div id="sales">

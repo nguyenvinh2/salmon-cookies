@@ -28,7 +28,7 @@ function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
   this.averageCookiesSold = cookiesSold;
   this.cookiesSold = [];
   this.cookieSoldCalculator = () => {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed-1; i++) {
+    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed - 1; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
     this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
@@ -36,21 +36,28 @@ function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
 }
 
 function generateStores(storeList) {
-  let totalStore = new StoreConstructor('Total',0,0,0);
-  totalStore.cookieSoldCalculator();
   let listOfStores = [];
   for (let i = 0; i < storeList.storeNames.length; i++) {
     let storeInital = new StoreConstructor(storeList.storeNames[i], storeList.minCustomers[i], storeList.maxCustomers[i], storeList.averageCookiesSold[i]);
     storeInital.cookieSoldCalculator();
     listOfStores.push(storeInital);
-    totalStore.cookiesSold = totalStore.cookiesSold.map((element, index) => element + storeInital.cookiesSold[index]);
+  }
+  listOfStores = createTotalSales(listOfStores);
+  return listOfStores;
+}
+
+function createTotalSales(listOfStores) {
+  let totalStore = new StoreConstructor('Total', 0, 0, 0);
+  totalStore.cookieSoldCalculator();
+  for (let i = 0; i < listOfStores.length; i++) {
+    totalStore.cookiesSold = totalStore.cookiesSold.map((element, index) => element + listOfStores[i].cookiesSold[index]);
   }
   listOfStores.push(totalStore);
+  console.log(listOfStores);
   return listOfStores;
 }
 
 let listOfStores = generateStores(storeMetaData);
-console.log(listOfStores);
 
 function generateSalesList(storeList) {
   let allSalesContainer = document.getElementById('sales');
@@ -70,7 +77,7 @@ function generateSalesList(storeList) {
   }
 }
 
-StoreConstructor.prototype.render = function(salesRow) {
+StoreConstructor.prototype.render = function (salesRow) {
   if (this.cookiesSold.length < 1) {
     console.log('The sales total cannot be rendered because there is nothing in the sales array');
   } else {
@@ -108,4 +115,38 @@ function createTableHeader(salesRow) {
   }
 }
 
+function addNewStore() {
+  let storeName = document.getElementsByName('store-name')[0].value;
+  let minCustomers = document.getElementsByName('min-customer')[0].value;
+  let maxCustomers = document.getElementsByName('max-customer')[0].value;
+  let averageCookiesSold = document.getElementsByName('ave-cookies')[0].value;
+
+  let newStore = new StoreConstructor(storeName, minCustomers, maxCustomers, averageCookiesSold);
+  newStore.cookieSoldCalculator();
+  let indexCheck = checkStore(storeName);
+
+  if (indexCheck !== false) {
+    listOfStores[indexCheck] = newStore;
+    listOfStores.pop();
+  } else {
+    listOfStores[listOfStores.length - 1] = newStore;
+  }
+  listOfStores = createTotalSales(listOfStores);
+  document.getElementById('sales').innerHTML = '';
+  generateSalesList(listOfStores);
+}
+
+function checkStore(storeName) {
+  for (let i = 0; i < listOfStores.length; i++) {
+    if (storeName === listOfStores[i].name) {
+      return i;
+    }
+  }
+  return false;
+}
+
 generateSalesList(listOfStores);
+document.getElementsByName('send-data')[0].addEventListener('click', (event) => {
+  event.preventDefault();
+  addNewStore();
+}, false);
