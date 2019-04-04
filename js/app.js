@@ -2,7 +2,7 @@
 
 const storeMetaData = {
   hoursOpen: 6,
-  hoursClosed: 19,
+  hoursClosed: 20,
   storeNames: ['1st and Pike', 'SeaTac Airport', 'Seattle Center', 'Capitol Hill', 'Alki'],
   minCustomers: [23, 3, 11, 20, 2],
   maxCustomers: [65, 24, 38, 38, 16],
@@ -28,7 +28,7 @@ function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
   this.averageCookiesSold = cookiesSold;
   this.cookiesSold = [];
   this.cookieSoldCalculator = () => {
-    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed; i++) {
+    for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed - 1; i++) {
       this.cookiesSold.push(cookiesAmountCalculator(customerCalculator(this.minCustomers, this.maxCustomers), this.averageCookiesSold));
     }
     this.cookiesSold.push(totalCookieSoldCalculator(this.cookiesSold));
@@ -36,21 +36,26 @@ function StoreConstructor(storeName, customersMin, customersMax, cookiesSold) {
 }
 
 function generateStores(storeList) {
-  let totalStore = new StoreConstructor('Total',0,0,0);
-  totalStore.cookieSoldCalculator();
   let listOfStores = [];
   for (let i = 0; i < storeList.storeNames.length; i++) {
     let storeInital = new StoreConstructor(storeList.storeNames[i], storeList.minCustomers[i], storeList.maxCustomers[i], storeList.averageCookiesSold[i]);
     storeInital.cookieSoldCalculator();
     listOfStores.push(storeInital);
-    totalStore.cookiesSold = totalStore.cookiesSold.map((element, index) => element + storeInital.cookiesSold[index]);
   }
-  listOfStores.push(totalStore);
+  listOfStores = createTotalSales(listOfStores);
   return listOfStores;
 }
 
-let listOfStores = generateStores(storeMetaData);
-console.log(listOfStores);
+function createTotalSales(listOfStores) {
+  let totalStore = new StoreConstructor('Total', 0, 0, 0);
+  totalStore.cookieSoldCalculator();
+  for (let i = 0; i < listOfStores.length; i++) {
+    totalStore.cookiesSold = totalStore.cookiesSold.map((element, index) => element + listOfStores[i].cookiesSold[index]);
+  }
+  listOfStores.push(totalStore);
+  console.log(listOfStores);
+  return listOfStores;
+}
 
 function generateSalesList(storeList) {
   let allSalesContainer = document.getElementById('sales');
@@ -70,11 +75,11 @@ function generateSalesList(storeList) {
   }
 }
 
-StoreConstructor.prototype.render = function(salesRow) {
+StoreConstructor.prototype.render = function (salesRow) {
   if (this.cookiesSold.length < 1) {
     console.log('The sales total cannot be rendered because there is nothing in the sales array');
   } else {
-    for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed + 1; i++) {
+    for (let i = storeMetaData.hoursOpen - 1; i <= storeMetaData.hoursClosed; i++) {
       let salesItem = document.createElement('td');
       if (i === storeMetaData.hoursOpen - 1) {
         salesItem.textContent = this.name;
@@ -87,7 +92,7 @@ StoreConstructor.prototype.render = function(salesRow) {
 };
 
 function createTableHeader(salesRow) {
-  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 2; i++) {
+  for (let i = storeMetaData.hoursOpen; i <= storeMetaData.hoursClosed + 1; i++) {
     let salesHeader = document.createElement('th');
     if (i === storeMetaData.hoursOpen) {
       salesHeader.textContent = 'Store Name';
@@ -97,7 +102,7 @@ function createTableHeader(salesRow) {
       } else if (i === 13) {
         salesHeader.textContent = '12PM';
       }
-      else if (i === storeMetaData.hoursClosed + 2) {
+      else if (i === storeMetaData.hoursClosed + 1) {
         salesHeader.textContent = 'Daily Total';
       }
       else {
@@ -108,4 +113,83 @@ function createTableHeader(salesRow) {
   }
 }
 
+function addNewStore() {
+  let storeName = document.getElementsByName('store-name')[0].value;
+  let minCustomers = parseInt(document.getElementsByName('min-customer')[0].value);
+  let maxCustomers = parseInt(document.getElementsByName('max-customer')[0].value);
+  let averageCookiesSold = parseFloat(document.getElementsByName('ave-cookies')[0].value);
+  console.log(averageCookiesSold);
+
+  if (storeName === '' || isNaN(minCustomers) || isNaN(maxCustomers) || isNaN(averageCookiesSold)) {
+    alert('Please fill out all of the values correctly.');
+    return;
+  }
+
+  let newStore = new StoreConstructor(storeName, minCustomers, maxCustomers, averageCookiesSold);
+
+  if (minCustomers > maxCustomers) {
+    alert('The Minimum Anticipated Customers cannot be greater than the Maximum Anticipated Customers.');
+  } else {
+    let indexCheck = checkStore(storeName);
+
+    newStore.cookieSoldCalculator();
+
+    if (indexCheck !== false) {
+      newStore.name = listOfStores[indexCheck].name;
+      listOfStores[indexCheck] = newStore;
+      listOfStores.pop();
+    } else {
+      listOfStores[listOfStores.length - 1] = newStore;
+    }
+
+    listOfStores = createTotalSales(listOfStores);
+    document.getElementById('sales').innerHTML = '';
+    generateSalesList(listOfStores);
+  }
+}
+
+function checkStore(storeName) {
+  for (let i = 0; i < listOfStores.length; i++) {
+    if (storeName.toLowerCase() === listOfStores[i].name.toLowerCase()) {
+      return i;
+    }
+  }
+  return false;
+}
+
+let listOfStores = generateStores(storeMetaData);
+
 generateSalesList(listOfStores);
+
+document.getElementsByName('send-data')[0].addEventListener('click', (event) => {
+  addNewStore();
+  hideForm();
+  event.preventDefault();
+}, false);
+
+document.getElementById('open-form').addEventListener('click', (event) => {
+  revealForm();
+  event.preventDefault();
+}, false);
+
+document.getElementById('close-button').addEventListener('click', (event) => {
+  hideForm();
+  event.preventDefault();
+}, false);
+
+document.getElementById('form-input').addEventListener('click', (event) => {
+  if (event.target === document.getElementById('form-input')) {
+    hideForm();
+  }
+  event.preventDefault();
+}, false);
+
+function revealForm() {
+  let openForm = document.getElementById('form-input');
+  openForm.style.display = 'block';
+}
+
+function hideForm() {
+  let closeForm = document.getElementById('form-input');
+  closeForm.style.display = 'none';
+}
