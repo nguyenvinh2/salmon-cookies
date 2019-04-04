@@ -115,10 +115,17 @@ function createTableHeader(salesRow) {
 
 function addNewStore() {
   let storeName = document.getElementsByName('store-name')[0].value;
-  let minCustomers = document.getElementsByName('min-customer')[0].value;
-  let maxCustomers = document.getElementsByName('max-customer')[0].value;
-  let averageCookiesSold = document.getElementsByName('ave-cookies')[0].value;
-  let newStore = new StoreConstructor(storeName, parseInt(minCustomers), parseInt(maxCustomers), parseFloat(averageCookiesSold));
+  let minCustomers = parseInt(document.getElementsByName('min-customer')[0].value);
+  let maxCustomers = parseInt(document.getElementsByName('max-customer')[0].value);
+  let averageCookiesSold = parseFloat(document.getElementsByName('ave-cookies')[0].value);
+  console.log(averageCookiesSold);
+
+  if (storeName === '' || isNaN(minCustomers) || isNaN(maxCustomers) || isNaN(averageCookiesSold)) {
+    alert('Please fill out all of the values correctly.');
+    return;
+  }
+
+  let newStore = new StoreConstructor(storeName, minCustomers, maxCustomers, averageCookiesSold);
 
   if (minCustomers > maxCustomers) {
     alert('The Minimum Anticipated Customers cannot be greater than the Maximum Anticipated Customers.');
@@ -155,6 +162,34 @@ let listOfStores = generateStores(storeMetaData);
 generateSalesList(listOfStores);
 
 document.getElementsByName('send-data')[0].addEventListener('click', (event) => {
-  event.preventDefault();
   addNewStore();
+  hideForm();
+  event.preventDefault();
 }, false);
+
+document.getElementById('open-form').addEventListener('click', (event) => {
+  revealForm();
+  event.preventDefault();
+}, false);
+
+document.getElementById('close-button').addEventListener('click', (event) => {
+  hideForm();
+  event.preventDefault();
+}, false);
+
+document.getElementById('form-input').addEventListener('click', (event) => {
+  if (event.target === document.getElementById('form-input')) {
+    hideForm();
+  }
+  event.preventDefault();
+}, false);
+
+function revealForm() {
+  let openForm = document.getElementById('form-input');
+  openForm.style.display = 'block';
+}
+
+function hideForm() {
+  let closeForm = document.getElementById('form-input');
+  closeForm.style.display = 'none';
+}
