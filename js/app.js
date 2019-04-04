@@ -162,9 +162,8 @@ let listOfStores = generateStores(storeMetaData);
 generateSalesList(listOfStores);
 
 document.getElementsByName('send-data')[0].addEventListener('click', (event) => {
-  addNewStore();
-  hideForm();
   event.preventDefault();
+  addNewStore();
 }, false);
 
 document.getElementById('open-form').addEventListener('click', (event) => {
