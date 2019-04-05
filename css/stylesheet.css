@@ -190,8 +190,7 @@ button[name=send-data] {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color: whitesmoke;
-  opacity: 1;
+  background-color: rgba(224, 255, 255, 1);
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
   padding: 12px 16px;

@@ -3,3 +3,21 @@ body {
   background-size: auto;
   background-repeat: repeat;
 }
+
+.family {
+  margin: 25px auto;
+  width: 75%;
+  padding: 10px;
+  text-align: center;
+}
+
+.family h3 {
+  border: none;
+  background-color:rgba(230, 243, 243, 0.1);
+  font-size: 25px;
+  padding: 15px;
+}
+
+.family p {
+  padding: 10px;
+}
