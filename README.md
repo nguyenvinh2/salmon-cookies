@@ -23,8 +23,15 @@
 
 ## Version
 
-    V0.5: 4/01/19 - Sales Data Generator for randomized values 
+    V0.5: 4/01/19 - Sales Data Generator for randomized values
+    V0.6: 4/02/19 - Added in Constructor Functions
+    V0.7: 4/03/19 - Added in Forms to create new stores
+    V0.8: 4/04/19 - Added in other webpages
+    V1.0: 4/05/19 - Completed site.
 
 ## Output
 
+![Image](assets/home.png)
 ![Image](assets/sales.png)
+![Image](assets/store.png)
+![Image](assets/about.png)
