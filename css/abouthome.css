@@ -21,3 +21,26 @@ body {
 .family p {
   padding: 10px;
 }
+
+#locations {
+  display: flex;
+  flex-wrap: wrap;
+  margin: 30px auto;
+}
+
+#locations div {
+  width: 25%;
+  margin: 25px;
+  text-align: left;
+  background-color:rgba(230, 243, 243, 0.9);
+  padding: 15px;
+  overflow: auto;
+}
+
+#locations h3 {
+  background-color:rgba(230, 243, 243, 0.1);
+  text-align: left;
+  border: none;
+  font-size: 20px;
+  text-decoration-line: underline;
+}
