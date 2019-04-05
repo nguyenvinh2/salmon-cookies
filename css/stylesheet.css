@@ -2,7 +2,7 @@ body {
   background-image: url("../assets/salmon.png");
   background-size: auto;
   background-repeat: repeat;
-  background-color: lightcyan; 
+  background-color: lightcyan;
 }
 
 h1 {
@@ -88,7 +88,7 @@ th, tr:last-child {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(119,136,153,.7);
+  background-color: rgba(119, 136, 153, .7);
   top: 0%;
 }
 
@@ -151,7 +151,6 @@ button[name=send-data] {
 
 /* ---------------- */
 
-
 /* Navigation Bar W3School Style*/
 
 .navbar {
@@ -191,8 +190,7 @@ button[name=send-data] {
 .dropdown-content {
   display: none;
   position: absolute;
-  background-color:whitesmoke;
-  opacity: 1;
+  background-color: rgba(224, 255, 255, 1);
   min-width: 100px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.4);
   padding: 12px 16px;
@@ -207,7 +205,7 @@ button[name=send-data] {
 }
 
 .container:hover {
-  background-color:yellow;
+  background-color: yellow;
   border-radius: 3px;
 }
 
@@ -217,41 +215,111 @@ a:hover {
 
 /* -------------- */
 
+/* Slideshow W3School Style */
+
+h5 {
+  margin: 15px auto;
+  font-weight: bold;
+  font-size: 30px;
+  text-align: center;
+  background-color: rgba(6, 19, 18, 0.9);
+  width: 40%;
+  border-radius: 10px;
+  overflow: auto;
+  padding: 10px;
+  color: whitesmoke;
+}
+
+article {
+  margin: 25px auto 25px auto;
+}
+
+.store {
+  background-color: rgba(230, 243, 243, 0.9);
+  width: 40%;
+  overflow: auto;
+  margin: auto;
+  box-shadow: 6px 6px 12px 4px rgba(0, 0, 0, 0.8);
+  border-radius: 10px;
+}
+
+.items {
+  display: none;
+  -webkit-animation-name: fade;
+  -webkit-animation-duration: 2.5s;
+  animation-name: fade;
+  animation-duration: 2.5s;
+  text-align: center;
+}
+
+.items img {
+  vertical-align: middle;
+  height: 350px;
+  margin: 10px auto;
+  box-shadow: 6px 6px 12px 4px rgba(0, 0, 0, 0.2);
+  border: solid whitesmoke;
+}
+
+.labels {
+  font-size: 15px;
+  padding: 5px 5px;
+  width: 100%;
+  text-align: center;
+}
+
+.labels h3 {
+  border: none;
+  background-color: inherit;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0
+  }
+  to {
+    opacity: 1
+  }
+}
+
+/* ---------------------------- */
+
 @media only screen and (max-width: 850px) {
   h1 {
     font-size: 25px;
   }
-
   h2 {
     font-size: 12px;
     padding-left: 3px;
     padding-top: 0px;
   }
-  
   .navbar {
     padding: 10px;
   }
-
   .page-index {
     float: left;
     font-size: 20px;
   }
-
   .container {
     padding: 1px;
     margin-top: -2px;
   }
-
   .container:hover .dropdown-content {
     display: block;
     margin-left: -80px;
     margin-top: 2px;
   }
-
   tr {
     font-size: 10px;
   }
-
   th, tr:last-child {
     font-size: 12px;
   }
@@ -261,35 +329,28 @@ a:hover {
   h1 {
     font-size: 15px;
   }
-
   h2 {
     font-size: 12px;
     padding-left: 3px;
   }
-
   .navbar {
     padding: 10px;
   }
-
   .page-index {
     float: left;
     font-size: 15px;
   }
-
   .container {
     margin-top: -7px;
   }
-
   .container:hover .dropdown-content {
     display: block;
     margin-left: -80px;
     margin-top: 2px;
   }
-
   #sales div {
     margin-bottom: 15px;
   }
-  
   #sales {
     margin: 50px;
   }

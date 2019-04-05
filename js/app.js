@@ -192,3 +192,4 @@ function hideForm() {
   let closeForm = document.getElementById('form-input');
   closeForm.style.display = 'none';
 }
+
